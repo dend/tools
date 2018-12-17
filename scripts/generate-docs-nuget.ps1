@@ -61,6 +61,8 @@ $nugetOutput = [io.path]::combine($WorkPath, '_tool_bin','nuget.exe')
 
 # Download Triggers
 Write-Output 'Downloading tools...'
+# Force TLS 1.2 (for GitHub in particular)
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 Invoke-WebRequest -Uri $popImportUrl -OutFile $popImportOutput
 Invoke-WebRequest -Uri $nueUrl -OutFile $nueOutput
 Invoke-WebRequest -Uri $mdocUrl -OutFile $mdocOutput
