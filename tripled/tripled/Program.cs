@@ -54,7 +54,7 @@ namespace tripled
                 // Build out the cache of DocIDs.
                 var frameworkFiles = Directory.GetFiles(Path.Combine(options.XmlPath, "FrameworksIndex"),
                     "*.xml", SearchOption.AllDirectories);
-                var docIdCache = new List<string>();
+                var docIdCache = new HashSet<string>();
 
                 foreach (var file in frameworkFiles)
                 {
@@ -62,7 +62,10 @@ namespace tripled
                     var docIds = from c in frameworkFile.Descendants()
                                  where c.Attribute("Id") != null
                                  select c.Attribute("Id")?.Value;
-                    docIdCache.AddRange(docIds);
+                    foreach(var docId in docIds.ToList())
+                    {
+                        docIdCache.Add(docId);
+                    }
                 }
 
                 foreach (var file in filesToAnalyze)
@@ -149,7 +152,7 @@ namespace tripled
         /// <summary>
         ///     Performs validation against the mdoc-generated framework files.
         /// </summary>
-        private static bool PerformFrameworkValidation(XDocument doc, IEnumerable<string> cache)
+        private static bool PerformFrameworkValidation(XDocument doc, HashSet<string> cache)
         {
             if (doc == null) throw new ArgumentNullException(nameof(doc));
             if (cache == null) throw new ArgumentNullException(nameof(cache));
