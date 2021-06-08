@@ -1,2 +1,2 @@
-Pillow==8.1.1
+Pillow==8.2.0
 -e git://github.com/crccheck/iptcinfo3.git#egg=iptcinfo3
